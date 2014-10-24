@@ -18,16 +18,13 @@
 #
 # Quartus II 64-Bit
 # Version 12.1 Build 177 11/07/2012 SJ Full Version
-# Date created = 14:24:07  October 24, 2014
+# Date created = 15:02:31  October 24, 2014
 #
 # -------------------------------------------------------------------------- #
 
 QUARTUS_VERSION = "12.1"
-DATE = "14:24:07  October 24, 2014"
+DATE = "15:02:31  October 24, 2014"
 
 # Revisions
 
 PROJECT_REVISION = "PSEC4_eval"
-PROJECT_REVISION = "PSEC3_eval_rev1"
-PROJECT_REVISION = "PSEC3_eval_revC"
-PROJECT_REVISION = "PSEC4_eval_2"
