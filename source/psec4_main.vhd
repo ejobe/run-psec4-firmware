@@ -80,7 +80,10 @@ entity psec4_main is
 		ROmon			:	in std_logic;
 		VDLout			:	in std_logic;
 		
+		
 		xEVT_CNT		: 	out std_logic_vector(10 downto 0);
+		pulse_out_10Hz_o	: out std_logic;
+
 		xTRIG_CNTRL		:	in std_logic_vector(1 downto 0);
 		xTRIG_THRSH		: 	in std_logic_vector(11 downto 0);
 		xTRIG_LOCATE	:	out std_logic_vector(5 downto 0);
@@ -105,6 +108,10 @@ architecture Behavioral of psec4_main is
 	signal RO_CNT 		: 	std_logic_vector(15 downto 0); 
 	signal read_clk_en	:	std_logic;
 	signal Trig_signal_from_self : std_logic;
+	
+	signal refresh_clk_10Hz				: std_logic := '0';
+	signal refresh_clk_counter_10Hz : std_logic_vector(23 downto 0);
+	signal REFRESH_CLK_MATCH_10HZ : std_logic_vector(23 downto 0) := x"3D0900";
 	
 ---COMPONENTS--------------------------------
 	component psec4_trigger
@@ -250,6 +257,25 @@ architecture Behavioral of psec4_main is
 	RO_CNT <= x"CA00"; -- CA00
 
 
+	pulse_out_10Hz_o <= refresh_clk_10Hz;
+	proc_make_refresh_pulse : process(xCLK40M)
+	begin
+	if rising_edge(xCLK40M) then			
+		if refresh_clk_10Hz = '1' then
+			refresh_clk_counter_10Hz <= (others=>'0');
+		else
+			refresh_clk_counter_10Hz <= refresh_clk_counter_10Hz + 1;
+		end if;
+		--//pulse refresh when refresh_clk_counter = REFRESH_CLK_MATCH
+		case refresh_clk_counter_10Hz is
+			when REFRESH_CLK_MATCH_10HZ =>
+				refresh_clk_10Hz <= '1';
+			when others =>
+				refresh_clk_10Hz <= '0';
+		end case;
+	end if;
+	end process;
+	
 		xTRIG	:	psec4_trigger
 		port map(
 			
