@@ -250,8 +250,11 @@ architecture Behavioral of psec4_main is
 	--writeCLK_copy <= MCLK;
 	TRIG_EXT <= trig_flag;
 	readCLK <= xRD_CLK;
-	readCLK1 <= (readCLK and read_clk_en);
-	readCLK2 <= (readCLK and read_clk_en);
+	
+	readCLK1 <= xRD_CLK; --remove read clock gating 10/2020
+	readCLK2 <= xRD_CLK;
+	--readCLK1 <= (readCLK and read_clk_en);
+	--readCLK2 <= (readCLK and read_clk_en);
 	DEBUG_out(0) <= VDLout;
 	xPROVDD <= RO_DAC_CNTRL;
 	RO_CNT <= x"CA00"; -- CA00
